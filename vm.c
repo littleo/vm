@@ -400,9 +400,9 @@ input_label:
 output_label:
 	arg = *(sp--);
 
-	printf("\033[0;31m");
+	// printf("\033[0;31m");
 	printf("\t(%c)", arg.value);
-	printf("\033[0m");
+	// printf("\033[0m");
 
 	pc++;
 	next_instruction;
