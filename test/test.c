@@ -20,29 +20,13 @@ void printbits(void * pnt0, size_t cnt) {
 
 int main(int argc, char const *argv[])
 {
-    vector freelist;
-    vector_init(&freelist);
-    for (size_t i = 0; i < 33; i++)
-    {
-        vector_push(&freelist, i);
-    }
+    stack_e * stack = (stack_e *) malloc(sizeof(stack_e) * STACK_SIZE);
+    heap_s heap;
+    heap_init(&heap);
+
     
-    printf("Capacity: %d Count: %d\n", freelist.capacity, freelist.count);
-    for (size_t i = 0; i < freelist.count; i++)
-    {
-        printf("%d ", freelist.data[i]);
-    }
 
-    for (size_t i = 0; i < 10; i++)
-    {
-        vector_pop(&freelist);
-    }
-
-    printf("\nCapacity: %d Count: %d\n", freelist.capacity, freelist.count);
-    for (size_t i = 0; i < freelist.count; i++)
-    {
-        printf("%d ", freelist.data[i]);
-    }
+    free(stack);
 
     return 0;
 }

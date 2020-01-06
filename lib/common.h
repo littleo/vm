@@ -10,6 +10,7 @@
 #define FALSE 0
 #define BYTECODE_SIZE 65536 // 2**16
 
+#define newline printf("\n")
 #define get_addr(pc) \
 	(*(pc+1) & 0xFF) | (*(pc+2) << 8)
 

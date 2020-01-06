@@ -161,7 +161,6 @@ jnz_label:
 
 dup_label:
 	offset = *(++pc);
-	// offset = get_value(arg);
 
 	arg = *(sp - offset);
 	*(++sp) = arg;
@@ -173,7 +172,6 @@ dup_label:
 
 swap_label:
 	offset = *(++pc);
-	// offset = get_value(arg);
 
 	arg = *(sp - offset);
 	temp = *sp;
@@ -212,17 +210,6 @@ push1:
 	next_instruction;
 
 add_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -232,23 +219,10 @@ add_label:
 	arg.value = a+b;
 	*(++sp) = arg;
 
-	// *(++sp) = (a+b) | temp;
-
 	pc++;
 	next_instruction;
 
 sub_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -258,23 +232,10 @@ sub_label:
 	arg.value = a-b;
 	*(++sp) = arg;
 
-	// *(++sp) = (a-b) | temp;
-
 	pc++;
 	next_instruction;
 
 mul_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -284,23 +245,10 @@ mul_label:
 	arg.value = a*b;
 	*(++sp) = arg;
 
-	// *(++sp) = (a*b) | temp;
-
 	pc++;
 	next_instruction;
 
 div_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -310,23 +258,10 @@ div_label:
 	arg.value = a/b;
 	*(++sp) = arg;
 
-	// *(++sp) = (a/b) | temp;
-
 	pc++;
 	next_instruction;
 
 mod_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -336,23 +271,10 @@ mod_label:
 	arg.value = a%b;
 	*(++sp) = arg;
 
-	// *(++sp) = (a%b) | temp;
-
 	pc++;
 	next_instruction;
 
 eq_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -362,24 +284,10 @@ eq_label:
 	arg.value = a == b ? 1 : 0;
 	*(++sp) = arg;
 
-	// *(++sp) = a == b ? 1 : 0;
-	// *(sp) = *(sp) | temp;
-
 	pc++;
 	next_instruction;
 
 ne_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -389,24 +297,10 @@ ne_label:
 	arg.value = a != b ? 1 : 0;
 	*(++sp) = arg;
 
-	// *(++sp) = a != b ? 1 : 0;
-	// *(sp) = *(sp) | temp;
-
 	pc++;
 	next_instruction;
 
 lt_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -416,24 +310,10 @@ lt_label:
 	arg.value = a < b ? 1 : 0;
 	*(++sp) = arg;
 
-	// *(++sp) = a < b ? 1 : 0;
-	// *(sp) = *(sp) | temp;
-
 	pc++;
 	next_instruction;
 
 gt_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -443,24 +323,10 @@ gt_label:
 	arg.value = a > b ? 1 : 0;
 	*(++sp) = arg;
 
-	// *(++sp) = a > b ? 1 : 0;
-	// *(sp) = *(sp) | temp;
-
 	pc++;
 	next_instruction;
 
 le_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -470,24 +336,10 @@ le_label:
 	arg.value = a <= b ? 1 : 0;
 	*(++sp) = arg;
 
-	// *(++sp) = a <= b ? 1 : 0;
-	// *(sp) = *(sp) | temp;
-
 	pc++;
 	next_instruction;
 
 ge_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -496,9 +348,6 @@ ge_label:
 
 	arg.value = a >= b ? 1 : 0;
 	*(++sp) = arg;
-
-	// *(++sp) = a >= b ? 1 : 0;
-	// *(sp) = *(sp) | temp;
 
 	pc++;
 	next_instruction;
@@ -513,17 +362,6 @@ not_label:
 	next_instruction;
 
 and_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -533,24 +371,10 @@ and_label:
 	arg.value = ((a == 0) | (b == 0)) ? 0 : 1;
 	*(++sp) = arg;
 
-	// *(++sp) = ((a == 0) | (b == 0)) ? 0 : 1;
-	// *(sp) = *(sp) | temp;
-
 	pc++;
 	next_instruction;
 
 or_label:
-	// b = *(sp--);
-	// a = *(sp--);
-	// temp = mask(a) ^ mask(b);
-
-	// if (temp) {
-	// 	perror("Not the same type");
-	// 	exit(1);
-	// }
-
-	// a = get_value(a);
-	// b = get_value(b);
 	temp = *(sp--);
 	arg = *(sp--);
 
@@ -559,9 +383,6 @@ or_label:
 
 	arg.value = ((a == 0) & (b == 0)) ? 0 : 1;
 	*(++sp) = arg;
-
-	// *(++sp) = ((a == 0) & (b == 0)) ? 0 : 1;
-	// *(sp) = *(sp) | temp;
 
 	pc++;
 	next_instruction;
@@ -578,7 +399,6 @@ output_label:
 	arg = *(sp--);
 
 	printf("\t\t(%c)", arg.value);
-	// putchar(arg);
 
 	pc++;
 	next_instruction;
@@ -597,9 +417,7 @@ cons:
 	arg = *(sp--);
 
 	h_entry = (heap_e) {.hd = arg, .tl = temp};
-	// printf(" (hd: %08x, tl: %08x)", h_entry.hd, h_entry.tl);
 	*(++hp) = h_entry;
-	// print_entry(hp);
 
 	default_stack_ptr.value = (hp - heap_base);
 	*(++sp) = default_stack_ptr;

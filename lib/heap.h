@@ -4,6 +4,7 @@
 #include "common.h"
 #include "stack.h"
 #include "memory.h"
+#include "vector.h"
 
 #define HEAP_SIZE 10
 
@@ -16,7 +17,8 @@ typedef struct {
     heap_e * data;
     int count;
     int capacity;
-} heap;
+    vector * free_list;
+} heap_s;
 
 void heap_init();
 void heap_push();

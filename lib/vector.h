@@ -12,6 +12,7 @@ typedef struct {
 
 void vector_init();
 void vector_push();
+uint32_t vector_pop();
 void vector_free();
 
 #endif

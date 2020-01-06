@@ -1,24 +1,26 @@
 #include "heap.h"
 
-void heap_init(heap * h) {
-    h->capacity = 0;
-    h->count = 0;
-    h->data = NULL;
+void heap_init(heap_s * hp) {
+    hp->capacity = 0;
+    hp->count = 0;
+    hp->data = NULL;
+    hp->free_list = NULL;
 }
 
-void heap_push(heap * h, heap_e entry) {
-    if (h->capacity < h->count+1) {
-        uint32_t old_capacity = h->capacity;
-        h->capacity = GROW_CAPACITY(old_capacity);
-        h->data = GROW_ARRAY(h->data, heap_e, 
-            old_capacity, h->capacity);
+void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
+    if (hp->capacity < hp->count+1) {
+        // No we have problem
+        uint32_t old_capacity = hp->capacity;
+        hp->capacity = GROW_CAPACITY(old_capacity);
+        hp->data = GROW_ARRAY(hp->data, heap_e, 
+            old_capacity, hp->capacity);
     }
 
-    h->data[h->count] = entry;
-    h->count++;
+    hp->data[hp->count] = entry;
+    hp->count++;
 }
 
-void heap_free(heap * h) {                      
-  FREE_ARRAY(heap_e, h->data, h->capacity);
-  heap_init(h);                                 
+void heap_free(heap_s * hp) {                      
+  FREE_ARRAY(heap_e, hp->data, hp->capacity);
+  heap_init(hp);                                 
 }

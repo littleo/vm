@@ -18,7 +18,14 @@ void vector_push(vector * v, uint32_t entry) {
     v->count++;
 }
 
+uint32_t vector_pop(vector * v) {
+    if (v->count > 0) {
+        return v->data[--v->count];
+    }
+}
+
 void vector_free(vector * v) {                      
   FREE_ARRAY(uint32_t, v->data, v->capacity);
   vector_init(v);                                 
 }
+
