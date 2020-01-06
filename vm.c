@@ -168,7 +168,7 @@ dup_label:
 	offset = *(++pc);
 
 	// arg = *(sp - offset);
-	arg = sp.data[offset];
+	arg = sp.data[sp.count - offset - 1];
 
 	// *(++sp) = arg;
 	stack_push(&sp, arg);
@@ -532,8 +532,7 @@ nop:
 	next_instruction;
 
 end_label:
-	stack_free(sp);
-	free(byte_program);
+	stack_free(&sp);
 	fclose(fp);
 	exit(EXIT_SUCCESS);
 
