@@ -65,10 +65,10 @@ int main(int argc, char const *argv[])
 		&&nop,
 		&&nop,
 		&&nop,
-		&&nop
-		// &&cons,
-		// &&hd,
-		// &&tl
+		&&nop,
+		&&cons,
+		&&hd,
+		&&tl
 	};
 
 	if (argc < 2)
@@ -95,10 +95,7 @@ int main(int argc, char const *argv[])
 	addr jmp_addr;
 
 	stack_e arg, temp;
-	stack_e default_stack_val = {0,0};
-	stack_e default_stack_ptr = {0,1};
-
-	int32_t a,b;
+	stack_e a,b;
 	uint32_t offset;
 	// int32_t arg_val, sarg_val;
 
@@ -126,7 +123,7 @@ int main(int argc, char const *argv[])
 
 next_instruction_d:
 	opcode = *pc & 0xFF;
-	// printf("\t [%08x, %08x]", *(sp), *(sp-1));
+	printf("\t [%08x, %08x]", *(sp), *(sp-1));
 	printf("\n");
 
 	printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
@@ -145,7 +142,7 @@ jump_label:
 jnz_label:
 	arg = *(sp--);
 
-	if (arg.value) {
+	if (get_value(arg)) {
 		jmp_addr = get_addr(pc);
 		pc = byte_program + jmp_addr;
 
@@ -159,8 +156,8 @@ jnz_label:
 	next_instruction;
 
 dup_label:
-	offset = *(++pc);
-	// offset = get_value(arg);
+	arg = *(++pc);
+	offset = get_value(arg);
 
 	arg = *(sp - offset);
 	*(++sp) = arg;
@@ -171,8 +168,8 @@ dup_label:
 	next_instruction;
 
 swap_label:
-	offset = *(++pc);
-	// offset = get_value(arg);
+	arg = *(++pc);
+	offset = get_value(arg);
 
 	arg = *(sp - offset);
 	temp = *sp;
@@ -189,30 +186,27 @@ drop_label:
 	pc++;
 	next_instruction;
 
-push4:
-	default_stack_val.value = *(int32_t *) (++pc);
-	*(++sp) = default_stack_val;
+push4:	
+	*(++sp) = *(int32_t *) (++pc);
 
 	pc += 4;
 	next_instruction;
 
 push2:
-	default_stack_val.value = *(int16_t *) (++pc);
-	*(++sp) = default_stack_val;
+	*(++sp) = *(int16_t *) (++pc);
 
 	pc += 2;
 	next_instruction;
 
 push1:
-	default_stack_val.value = *(int8_t *) (++pc);
-	*(++sp) = default_stack_val;
+	*(++sp) = *(int8_t *) (++pc);
 
 	pc++;
 	next_instruction;
 
 add_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -220,25 +214,17 @@ add_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a+b;
-	*(++sp) = arg;
-
-	// *(++sp) = (a+b) | temp;
+	*(++sp) = (a+b) | temp;
 
 	pc++;
 	next_instruction;
 
 sub_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -246,25 +232,17 @@ sub_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a-b;
-	*(++sp) = arg;
-
-	// *(++sp) = (a-b) | temp;
+	*(++sp) = (a-b) | temp;
 
 	pc++;
 	next_instruction;
 
 mul_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -272,25 +250,17 @@ mul_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a*b;
-	*(++sp) = arg;
-
-	// *(++sp) = (a*b) | temp;
+	*(++sp) = (a*b) | temp;
 
 	pc++;
 	next_instruction;
 
 div_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -298,25 +268,17 @@ div_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a/b;
-	*(++sp) = arg;
-
-	// *(++sp) = (a/b) | temp;
+	*(++sp) = (a/b) | temp;
 
 	pc++;
 	next_instruction;
 
 mod_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -324,25 +286,17 @@ mod_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a%b;
-	*(++sp) = arg;
-
-	// *(++sp) = (a%b) | temp;
+	*(++sp) = (a%b) | temp;
 
 	pc++;
 	next_instruction;
 
 eq_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -350,26 +304,18 @@ eq_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a == b ? 1 : 0;
-	*(++sp) = arg;
-
-	// *(++sp) = a == b ? 1 : 0;
+	*(++sp) = a == b ? 1 : 0;
 	// *(sp) = *(sp) | temp;
 
 	pc++;
 	next_instruction;
 
 ne_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -377,26 +323,18 @@ ne_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a != b ? 1 : 0;
-	*(++sp) = arg;
-
-	// *(++sp) = a != b ? 1 : 0;
+	*(++sp) = a != b ? 1 : 0;
 	// *(sp) = *(sp) | temp;
 
 	pc++;
 	next_instruction;
 
 lt_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -404,26 +342,18 @@ lt_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a < b ? 1 : 0;
-	*(++sp) = arg;
-
-	// *(++sp) = a < b ? 1 : 0;
+	*(++sp) = a < b ? 1 : 0;
 	// *(sp) = *(sp) | temp;
 
 	pc++;
 	next_instruction;
 
 gt_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -431,26 +361,18 @@ gt_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a > b ? 1 : 0;
-	*(++sp) = arg;
-
-	// *(++sp) = a > b ? 1 : 0;
+	*(++sp) = a > b ? 1 : 0;
 	// *(sp) = *(sp) | temp;
 
 	pc++;
 	next_instruction;
 
 le_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -458,26 +380,18 @@ le_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a <= b ? 1 : 0;
-	*(++sp) = arg;
-
-	// *(++sp) = a <= b ? 1 : 0;
+	*(++sp) = a <= b ? 1 : 0;
 	// *(sp) = *(sp) | temp;
 
 	pc++;
 	next_instruction;
 
 ge_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -485,35 +399,26 @@ ge_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = a >= b ? 1 : 0;
-	*(++sp) = arg;
-
-	// *(++sp) = a >= b ? 1 : 0;
+	*(++sp) = a >= b ? 1 : 0;
 	// *(sp) = *(sp) | temp;
 
 	pc++;
 	next_instruction;
 
 not_label:
-	arg = *(sp--);
-	arg.value = !arg.value;
+	b = *(sp--);
 
-	*(++sp) = arg;
+	*(++sp) = !b;
 
 	pc++;
 	next_instruction;
 
 and_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -521,26 +426,18 @@ and_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = ((a == 0) | (b == 0)) ? 0 : 1;
-	*(++sp) = arg;
-
-	// *(++sp) = ((a == 0) | (b == 0)) ? 0 : 1;
+	*(++sp) = ((a == 0) | (b == 0)) ? 0 : 1;
 	// *(sp) = *(sp) | temp;
 
 	pc++;
 	next_instruction;
 
 or_label:
-	// b = *(sp--);
-	// a = *(sp--);
+	b = *(sp--);
+	a = *(sp--);
 	// temp = mask(a) ^ mask(b);
 
 	// if (temp) {
@@ -548,18 +445,10 @@ or_label:
 	// 	exit(1);
 	// }
 
-	// a = get_value(a);
-	// b = get_value(b);
-	temp = *(sp--);
-	arg = *(sp--);
+	a = get_value(a);
+	b = get_value(b);
 
-	a = arg.value;
-	b = temp.value;
-
-	arg.value = ((a == 0) & (b == 0)) ? 0 : 1;
-	*(++sp) = arg;
-
-	// *(++sp) = ((a == 0) & (b == 0)) ? 0 : 1;
+	*(++sp) = ((a == 0) & (b == 0)) ? 0 : 1;
 	// *(sp) = *(sp) | temp;
 
 	pc++;
@@ -567,8 +456,7 @@ or_label:
 
 input_label:
 	printf(" ");
-	default_stack_val.value = getchar();
-	*(++sp) = default_stack_val;
+	*(++sp) = getchar();
 
 	pc++;
 	next_instruction;
@@ -576,7 +464,7 @@ input_label:
 output_label:
 	arg = *(sp--);
 
-	printf("\t\t(%c)", arg.value);
+	printf("(%c)", arg);
 	// putchar(arg);
 
 	pc++;
@@ -591,54 +479,54 @@ clock:
 	pc++;
 	next_instruction;
 
-// cons:
-// 	b = *(sp--);
-// 	a = *(sp--);
+cons:
+	b = *(sp--);
+	a = *(sp--);
 
-// 	h_entry = (heap_e) {.hd = a, .tl = b};
-// 	// printf(" (hd: %08x, tl: %08x)", h_entry.hd, h_entry.tl);
-// 	*(++hp) = h_entry;
-// 	// print_entry(hp);
+	h_entry = (heap_e) {.hd = a, .tl = b};
+	// printf(" (hd: %08x, tl: %08x)", h_entry.hd, h_entry.tl);
+	*(++hp) = h_entry;
+	// print_entry(hp);
 
-// 	offset = (hp - heap_base);
-// 	*(++sp) = address_me(offset);
+	offset = (hp - heap_base);
+	*(++sp) = address_me(offset);
 
-// 	pc++;
-// 	next_instruction;
+	pc++;
+	next_instruction;
 
-// hd:
-// 	arg = *(sp--);
+hd:
+	arg = *(sp--);
 
-// 	if (!(mask(arg))) {
-// 		perror("No address");
-// 		exit(1);
-// 	}
+	if (!(mask(arg))) {
+		perror("No address");
+		exit(1);
+	}
 
-// 	offset = get_value(arg);
-// 	printf(" (offset) %04x", offset);
+	offset = get_value(arg);
+	printf(" (offset) %04x", offset);
 
-// 	h_entry = *(heap_base + offset);
-// 	*(++sp) = (h_entry.hd);
+	h_entry = *(heap_base + offset);
+	*(++sp) = (h_entry.hd);
 
-// 	pc++;
-// 	next_instruction;
+	pc++;
+	next_instruction;
 
-// tl:
-// 	arg = *(sp--);
+tl:
+	arg = *(sp--);
 
-// 	if (!(mask(arg))) {
-// 		perror("No address");
-// 		exit(1);
-// 	}
+	if (!(mask(arg))) {
+		perror("No address");
+		exit(1);
+	}
 
-// 	offset = get_value(arg);
-// 	printf(" (offset) %04x", offset);
+	offset = get_value(arg);
+	printf(" (offset) %04x", offset);
 
-// 	h_entry = *(heap_base + offset);
-// 	*(++sp) = (h_entry.tl);
+	h_entry = *(heap_base + offset);
+	*(++sp) = (h_entry.tl);
 
-// 	pc++;
-// 	next_instruction;
+	pc++;
+	next_instruction;
 
 nop:
 	pc++;

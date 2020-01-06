@@ -16,6 +16,5 @@ void heap_add(heap_s * h, heap_e new_entry) {
     }
 
     h->heap_t[h->count] = new_entry;               
-    h->count++;   
-
+    h->count++;
 }     
