@@ -479,8 +479,8 @@ cons:
 	// arg = *(sp--);
 	arg = stack_pop(&sp);
 
-	h_entry = (heap_e) {.hd = arg, .tl = temp};
-	*(++hp) = h_entry;
+	// h_entry = (heap_e) {.hd = arg, .tl = temp};
+	// *(++hp) = h_entry;
 
 	default_stack_ptr.value = (hp - heap_base);
 	// *(++sp) = default_stack_ptr;
