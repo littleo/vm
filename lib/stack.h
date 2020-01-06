@@ -2,6 +2,8 @@
 #define gc_stack_h
 
 #include "common.h"
+#include "memory.h"
+#include "vector.h"
 
 #define STACK_SIZE 200
 
@@ -11,14 +13,15 @@ typedef struct {
 	int32_t marked 	: 1;
 } stack_e;
 
-// #define MASK 0x80000000
-// #define UNMASK 0x7fffffff
+typedef struct {
+    stack_e * data;
+    int count;
+    int capacity;
+} stack_s;
 
-// #define mask(x) \
-// 	(x & MASK)
-// #define get_value(x) \
-// 	(x & UNMASK)
-// #define address_me(x) \
-// 	(x | MASK)
+void stack_init();
+void stack_push();
+stack_e stack_pop();
+void stack_free();
 
 #endif

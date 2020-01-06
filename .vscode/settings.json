@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "memory.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "stack.h": "c",
+        "vector.h": "c"
     }
 }
