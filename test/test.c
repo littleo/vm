@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "../lib/memory.h"
+#include "../lib/vector.h"
+#include "../lib/heap.h"
 
 // #define STACK_SIZE 100
 #define HEAP_SIZE 100
@@ -37,31 +39,25 @@ typedef struct {
     uint32_t count;
 } heap_s;
 
-typedef struct {
-    uint32_t * data;
-    uint32_t capacity;
-    uint32_t count;
-} vector;
-
-void vector_init(vector * v) {
-    v->capacity = 0;
-    v->count = 0;
-    v->data = NULL;
-}
-
-void vector_push(vector * v, uint32_t entry) {
-    if (v->capacity < v->count+1) {
-        uint32_t old_capacity = v->capacity;
-        v->capacity = GROW_CAPACITY(old_capacity);
-        v->data = GROW_ARRAY(v->data, uint32_t, 
-            old_capacity, v->capacity);
-    }
-}
-
 int main(int argc, char const *argv[])
 {
     vector free_list;
 
+    vector_init(&free_list);
+    
+    for (size_t i = 0; i < 33; i++)
+    {
+        vector_push(&free_list, i);
+    }
 
+    
+    for (size_t i = 0; i < 33; i++)
+    {
+        printf("%d ", free_list.data[i]);
+    }
+
+    printf("\n%d, %d", free_list.capacity, free_list.count);
+
+    vector_free(&free_list);
     return 0;
 }
