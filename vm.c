@@ -129,12 +129,13 @@ int main(int argc, char const *argv[])
 
 next_instruction_d:
 	opcode = *pc & 0xFF;
-	// printf("\t\t [%08x]", *(sp));
+	printf("\t\t");
 	stack_head_show(&sp);
 	printf("\n");
 	// printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
-	printf("%s", labels[opcode]);
+	// printf("%s", labels[opcode]);
 
+	printf("%p: %s ", pc, labels[opcode]);
 	next_instruction_f;
 
 halt_label:
@@ -182,14 +183,14 @@ swap_label:
 	offset = *(++pc);
 
 	// arg = *(sp - offset);
-	arg = sp.data[offset];
+	arg = sp.data[sp.count - offset - 1];
 	// temp = *sp;
-	temp = stack_head(&sp);
+	temp = sp.data[sp.count - 1];
 
 	// *sp = arg;
 	sp.data[sp.count-1] = arg;
 	// *(sp - offset) = temp;
-	sp.data[offset] = temp;
+	sp.data[sp.count - offset - 1] = temp;
 
 	pc++;
 	next_instruction;
