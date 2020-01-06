@@ -1,28 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "../lib/memory.h"
 
-#define STACK_SIZE 10
-#define HEAP_SIZE 10
-
-#define byte uint8_t
-// #define stack_e int32_t
-
-typedef struct {
-    int32_t value: 30;
-    int32_t type : 1;
-} stack_e;
-
-typedef struct {
-    stack_e f;
-    stack_e s;
-} heap_e;
-
-typedef struct {
-    heap_e * heap_array;
-    uint32_t size;
-    // uint32_t * scan, * next;
-} heap_s;
+// #define STACK_SIZE 100
+#define HEAP_SIZE 100
 
 void printbits(void * pnt0, size_t cnt) {
     uint32_t * pnt = pnt0;
@@ -37,30 +19,49 @@ void printbits(void * pnt0, size_t cnt) {
     putchar('\n');
 }
 
+typedef struct {
+    int32_t value	: 30;
+    int32_t type 	: 1;
+	int32_t marked 	: 1;
+} stack_e;
+
+typedef struct {
+    stack_e f;
+    stack_e s;
+    uint32_t next;
+} heap_e;
+
+typedef struct {
+    heap_e * heap_t;
+    uint32_t size;
+    uint32_t count;
+} heap_s;
+
+typedef struct {
+    uint32_t * data;
+    uint32_t capacity;
+    uint32_t count;
+} vector;
+
+void vector_init(vector * v) {
+    v->capacity = 0;
+    v->count = 0;
+    v->data = NULL;
+}
+
+void vector_push(vector * v, uint32_t entry) {
+    if (v->capacity < v->count+1) {
+        uint32_t old_capacity = v->capacity;
+        v->capacity = GROW_CAPACITY(old_capacity);
+        v->data = GROW_ARRAY(v->data, uint32_t, 
+            old_capacity, v->capacity);
+    }
+}
+
 int main(int argc, char const *argv[])
 {
-    stack_e default_entry = {0,0};
-    stack_e test = default_entry;
-    
-    // printbits(&test, 32);
+    vector free_list;
 
-    // char * array;
-    // array = (char *) malloc(4 * sizeof(char));
-    // array[0] = 0x09;
-    // array[1] = 0x87;
-    // array[2] = 0x83;
-    // array[3] = 0x02;
 
-    // test.value = * (int32_t *) array;
-    // printf("T:%x V:%x \n", test.type, test.value);
-    // test.value = -1;
-
-    char * test1 = "Shit";
-    printf("%s", test1);
-    fflush(stdout);
-
-    char * test2 = "Shit";
-    printf("\r%-20s", stdout);
-
-    // printbits(&test, 32);
+    return 0;
 }
