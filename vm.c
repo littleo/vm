@@ -3,6 +3,7 @@
 #include "lib/debug.h"
 #include "lib/heap.h"
 #include "lib/stack.h"
+#include "lib/memory.h"
 
 #define next_instruction \
 	goto next_instruction_d
