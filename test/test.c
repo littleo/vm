@@ -20,7 +20,29 @@ void printbits(void * pnt0, size_t cnt) {
 
 int main(int argc, char const *argv[])
 {
-    printf("alles hut\n");
+    vector freelist;
+    vector_init(&freelist);
+    for (size_t i = 0; i < 33; i++)
+    {
+        vector_push(&freelist, i);
+    }
+    
+    printf("Capacity: %d Count: %d\n", freelist.capacity, freelist.count);
+    for (size_t i = 0; i < freelist.count; i++)
+    {
+        printf("%d ", freelist.data[i]);
+    }
+
+    for (size_t i = 0; i < 10; i++)
+    {
+        vector_pop(&freelist);
+    }
+
+    printf("\nCapacity: %d Count: %d\n", freelist.capacity, freelist.count);
+    for (size_t i = 0; i < freelist.count; i++)
+    {
+        printf("%d ", freelist.data[i]);
+    }
 
     return 0;
 }
