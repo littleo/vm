@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
 	stack_e default_stack_val = {0,0,0};
 	stack_e default_stack_ptr = {0,1,0};
 
-    free(stack);
+    free(stack_base);
 
     return 0;
 }
