@@ -65,10 +65,10 @@ int main(int argc, char const *argv[])
 		&&nop,
 		&&nop,
 		&&nop,
-		&&nop
-		// &&cons,
-		// &&hd,
-		// &&tl
+		&&nop,
+		&&cons,
+		&&hd,
+		&&tl
 	};
 
 	if (argc < 2)
@@ -95,8 +95,8 @@ int main(int argc, char const *argv[])
 	addr jmp_addr;
 
 	stack_e arg, temp;
-	stack_e default_stack_val = {0,0};
-	stack_e default_stack_ptr = {0,1};
+	stack_e default_stack_val = {0,0,0};
+	stack_e default_stack_ptr = {0,1,0};
 
 	int32_t a,b;
 	uint32_t offset;
@@ -591,54 +591,54 @@ clock:
 	pc++;
 	next_instruction;
 
-// cons:
-// 	b = *(sp--);
-// 	a = *(sp--);
+cons:
+	temp = *(sp--);
+	arg = *(sp--);
 
-// 	h_entry = (heap_e) {.hd = a, .tl = b};
-// 	// printf(" (hd: %08x, tl: %08x)", h_entry.hd, h_entry.tl);
-// 	*(++hp) = h_entry;
-// 	// print_entry(hp);
+	h_entry = (heap_e) {.hd = arg, .tl = temp};
+	// printf(" (hd: %08x, tl: %08x)", h_entry.hd, h_entry.tl);
+	*(++hp) = h_entry;
+	// print_entry(hp);
 
-// 	offset = (hp - heap_base);
-// 	*(++sp) = address_me(offset);
+	default_stack_ptr.value = (hp - heap_base);
+	*(++sp) = default_stack_ptr;
 
-// 	pc++;
-// 	next_instruction;
+	pc++;
+	next_instruction;
 
-// hd:
-// 	arg = *(sp--);
+hd:
+	arg = *(sp--);
 
-// 	if (!(mask(arg))) {
-// 		perror("No address");
-// 		exit(1);
-// 	}
+	if (!(arg.type)) {
+		perror("No address");
+		exit(1);
+	}
 
-// 	offset = get_value(arg);
-// 	printf(" (offset) %04x", offset);
+	offset = arg.value;
+	printf(" (offset) %04x", offset);
 
-// 	h_entry = *(heap_base + offset);
-// 	*(++sp) = (h_entry.hd);
+	h_entry = *(heap_base + offset);
+	*(++sp) = (h_entry.hd);
 
-// 	pc++;
-// 	next_instruction;
+	pc++;
+	next_instruction;
 
-// tl:
-// 	arg = *(sp--);
+tl:
+	arg = *(sp--);
 
-// 	if (!(mask(arg))) {
-// 		perror("No address");
-// 		exit(1);
-// 	}
+	if (!(arg.type)) {
+		perror("No address");
+		exit(1);
+	}
 
-// 	offset = get_value(arg);
-// 	printf(" (offset) %04x", offset);
+	offset = arg.value;
+	printf(" (offset) %04x", offset);
 
-// 	h_entry = *(heap_base + offset);
-// 	*(++sp) = (h_entry.tl);
+	h_entry = *(heap_base + offset);
+	*(++sp) = (h_entry.tl);
 
-// 	pc++;
-// 	next_instruction;
+	pc++;
+	next_instruction;
 
 nop:
 	pc++;

@@ -4,8 +4,9 @@
 #include "common.h"
 
 typedef struct {
-    int32_t value: 30;
-    int32_t type : 1;
+    int32_t value	: 30;
+    int32_t type 	: 1;
+	int32_t marked 	: 1;
 } stack_e;
 
 // #define MASK 0x80000000
