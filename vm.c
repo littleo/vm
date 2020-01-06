@@ -126,7 +126,7 @@ int main(int argc, char const *argv[])
 
 next_instruction_d:
 	opcode = *pc & 0xFF;
-	// printf("\t [%08x, %08x]", *(sp), *(sp-1));
+	printf("\t [%x, %x]", *(sp), *(sp-1));
 	printf("\n");
 
 	printf("%p: [%02x] %s", pc, opcode, labels[opcode]);

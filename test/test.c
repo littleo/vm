@@ -46,13 +46,21 @@ int main(int argc, char const *argv[])
 
     // char * array;
     // array = (char *) malloc(4 * sizeof(char));
-    // array[0] = 0xff;
-    // array[1] = 0xff;
-    // array[2] = 0xff;
-    // array[3] = 0x3f;
+    // array[0] = 0x09;
+    // array[1] = 0x87;
+    // array[2] = 0x83;
+    // array[3] = 0x02;
 
     // test.value = * (int32_t *) array;
-    // printf("T:%x S:%x V:%x \n", test.type, test.seen, test.value);
-    test.value = -1;
-    printbits(&test, 32);
+    // printf("T:%x V:%x \n", test.type, test.value);
+    // test.value = -1;
+
+    char * test1 = "Shit";
+    printf("%s", test1);
+    fflush(stdout);
+
+    char * test2 = "Shit";
+    printf("\r%-20s", stdout);
+
+    // printbits(&test, 32);
 }
