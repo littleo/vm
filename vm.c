@@ -87,12 +87,13 @@ int main(int argc, char const *argv[])
 	byte_program = read_bytecode(fp);
 
 	// init stack
-	stack_e * stack;
-	stack = (stack_e *) malloc(STACK_SIZE * sizeof(stack_e));
+	// stack_e * stack;
+	// stack = (stack_e *) malloc(STACK_SIZE * sizeof(stack_e));
+	stack_s sp;
 
 // --------------------------------
 	byte * pc;
-	stack_e * sp;
+	// stack_e * sp;
 	addr jmp_addr;
 
 	stack_e arg, temp;
@@ -400,7 +401,7 @@ output_label:
 	arg = *(sp--);
 
 	printf("\033[0;31m");
-	printf("\t (%c)", arg.value);
+	printf("\t(%c)", arg.value);
 	printf("\033[0m");
 
 	pc++;
