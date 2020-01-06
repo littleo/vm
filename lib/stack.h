@@ -20,6 +20,7 @@ typedef struct {
 } stack_s;
 
 void stack_init();
+void show_stack_head();
 stack_e stack_head();
 void stack_push();
 stack_e stack_pop();
