@@ -12,7 +12,6 @@ void stack_head_show(stack_s * v) {
     } else {
         printf(" [EMPTY]");
     }
-
 }
 
 stack_e stack_head(stack_s * v) {
