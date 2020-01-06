@@ -3,27 +3,30 @@
 void stack_init(stack_s * v) {
     v->capacity = STACK_SIZE;
     v->count = 0;
-    v->data = GROW_ARRAY(v->data, stack_e, 
-                    0, v->capacity);
+    v->data = (stack_e *) malloc(STACK_SIZE * sizeof(stack_e));
+}
+
+void stack_head_show(stack_s * v) {
+    if (v->count) {
+        printf(" [%08x]", v->data[v->count-1]);
+    } else {
+        printf(" [EMPTY]");
+    }
+
 }
 
 stack_e stack_head(stack_s * v) {
     if (v->count)
-        return v->data[v->count];
+        return v->data[v->count-1];
 
-    stack_e temp = {0xabcdef, 0, 0};
-
-    return temp;
+    perror("Not stack head");
+    exit(EXIT_FAILURE);
 }
 
 void stack_push(stack_s * v, stack_e entry) {
     if (v->capacity < v->count+1) {
-        // uint32_t old_capacity = v->capacity;
-        // v->capacity = GROW_CAPACITY(old_capacity);
-        // v->data = GROW_ARRAY(v->data, stack_e, 
-        //     old_capacity, v->capacity);
-        print("Stack overflow !");
-        exit(1);
+        perror("Not enough stack");
+        exit(EXIT_FAILURE);
     }
 
     v->data[v->count] = entry;
