@@ -17,7 +17,7 @@ typedef struct {
     heap_e * data;
     int count;
     int capacity;
-    vector * free_list;
+    vector free_list;
 } heap_s;
 
 void heap_init();

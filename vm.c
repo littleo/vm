@@ -127,10 +127,11 @@ int main(int argc, char const *argv[])
 
 next_instruction_d:
 	opcode = *pc & 0xFF;
-	// printf("\t [%x, %x]", *(sp), *(sp-1));
+	printf("\t\t [%08x]", *(sp));
 	printf("\n");
+	// printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
+	printf("%s", labels[opcode]);
 
-	printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
 	next_instruction_f;
 
 halt_label:
@@ -398,7 +399,9 @@ input_label:
 output_label:
 	arg = *(sp--);
 
-	printf("\t\t(%c)", arg.value);
+	printf("\033[0;31m");
+	printf("\t (%c)", arg.value);
+	printf("\033[0m");
 
 	pc++;
 	next_instruction;
