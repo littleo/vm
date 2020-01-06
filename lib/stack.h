@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+#define STACK_SIZE 200
+
 typedef struct {
     int32_t value	: 30;
     int32_t type 	: 1;

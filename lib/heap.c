@@ -1,20 +1,24 @@
 #include "heap.h"
-#include "memory.h"
 
-void init_heap(heap_s * h) {
-    h->count = 0;
+void heap_init(heap * h) {
     h->capacity = 0;
-    h->heap_t = NULL;
+    h->count = 0;
+    h->data = NULL;
 }
 
-void heap_add(heap_s * h, heap_e new_entry) {   
-    if (h->capacity < h->count + 1) {       
-        int old_capacity = h->capacity;            
-        h->capacity = GROW_CAPACITY(old_capacity); 
-        h->heap_t = GROW_ARRAY(h->heap_t, heap_e,
-            old_capacity, h->capacity);            
+void heap_push(heap * h, heap_e entry) {
+    if (h->capacity < h->count+1) {
+        uint32_t old_capacity = h->capacity;
+        h->capacity = GROW_CAPACITY(old_capacity);
+        h->data = GROW_ARRAY(h->data, heap_e, 
+            old_capacity, h->capacity);
     }
 
-    h->heap_t[h->count] = new_entry;               
+    h->data[h->count] = entry;
     h->count++;
-}     
+}
+
+void heap_free(heap * h) {                      
+  FREE_ARRAY(heap_e, h->data, h->capacity);
+  heap_init(h);                                 
+}

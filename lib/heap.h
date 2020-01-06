@@ -3,22 +3,23 @@
 
 #include "common.h"
 #include "stack.h"
+#include "memory.h"
 
 #define HEAP_SIZE 10
 
-// typedef uint64_t heap_e;
 typedef struct {
     stack_e hd;
     stack_e tl;
 } heap_e;
 
 typedef struct {
+    heap_e * data;
     int count;
     int capacity;
-    heap_e * heap_t;
-} heap_s;
+} heap;
 
-void heap_init(heap_s * h);
-void heap_add(heap_s * h, heap_e new_entry);
+void heap_init();
+void heap_push();
+void heap_free();
 
 #endif
