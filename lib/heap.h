@@ -12,4 +12,9 @@ typedef struct {
     stack_e tl;
 } heap_e;
 
+typedef struct {
+    int count;
+    int capacity;
+    heap_e * heap_t;
+} heap_s;
 #endif
