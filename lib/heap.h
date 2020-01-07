@@ -21,6 +21,7 @@ typedef struct {
 } heap_s;
 
 void heap_init();
+void heap_head_show();
 void heap_push();
 void heap_free();
 

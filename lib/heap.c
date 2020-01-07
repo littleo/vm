@@ -7,17 +7,32 @@ void heap_init(heap_s * hp) {
     vector_init(&hp->free_list);
 }
 
+void heap_head_show(heap_s * hp) {
+    if (hp->count) {
+        heap_e head = hp->data[hp->count-1];
+
+        printf(" HEAP [%08x, %08x]", head.hd, head.tl);
+    } else {
+        printf(" [EMPTY]");
+    }
+}
+
 void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
     
     if (hp->capacity < hp->count+1) {
         // 1. call garbage collector and fit empty entries
-        // call_gc();
+        printf("\n-------------GC start-------------\n");
         // gc_mark();
         // gc_sweep();
-        // //
+        printf("\n-------------GC stop--------------\n");
+
         if (hp->free_list.count > 0) {
             uint32_t offset = vector_pop(&hp->free_list);
             hp->data[offset] = entry;
+
+            return;
+        } else {
+            printf("I did't succeed to garbage collection\n");
         }
 
         // 2. try to realloc
@@ -26,10 +41,12 @@ void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
         hp->data = GROW_ARRAY(hp->data, heap_e, 
             old_capacity, hp->capacity);
 
+        printf("\n-------------Realloc-------------\n");
         if (hp->data == NULL) {
             printf("I CAN'T DO ANYTHING ELSE");
             exit(1);
         }
+        printf("\n-------------Successfull realloc-------------\n");
     }
 
     hp->data[hp->count] = entry;

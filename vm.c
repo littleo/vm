@@ -86,16 +86,14 @@ int main(int argc, char const *argv[])
 	byte * byte_program;
 	byte_program = read_bytecode(fp);
 
-	// init stack
-	// stack_e * stack;
-	// stack = (stack_e *) malloc(STACK_SIZE * sizeof(stack_e));
-	stack_s sp;
-	stack_init(&sp);
-
-// --------------------------------
+// ----------Variables-------------
 	byte * pc;
 	// stack_e * sp;
 	addr jmp_addr;
+
+// ------------Stack---------------
+	stack_s sp;
+	stack_init(&sp);
 
 	stack_e arg, temp;
 	stack_e default_stack_val = {0,0,0};
@@ -103,23 +101,20 @@ int main(int argc, char const *argv[])
 
 	int32_t a,b;
 	uint32_t offset;
-	// int32_t arg_val, sarg_val;
 
+// -------------Clock--------------
 	clock_t t; 
 	double time_taken;
-// --------------------------------
-	heap_e * heap, * hp, * heap_base;
-	heap = (heap_e *) malloc(HEAP_SIZE * sizeof(heap_e));
+
+// -------------Heap---------------
+	heap_s hp;
+	heap_init(&hp);
 
 	heap_e h_entry;
 // ---------------------------------
 	// pc = &byte_program[0];
 	pc = byte_program;
-	// sp = &stack[0];
-	// sp = stack;
-	// hp = &heap[0];
-	hp = heap;
-	heap_base = heap;
+
 	t = clock(); 
 
 	printf("[Started]");
@@ -132,10 +127,8 @@ next_instruction_d:
 	printf("\t\t");
 	stack_head_show(&sp);
 	printf("\n");
-	// printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
-	// printf("%s", labels[opcode]);
 
-	printf("%p: %s ", pc, labels[opcode]);
+	printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
 	next_instruction_f;
 
 halt_label:
@@ -480,10 +473,12 @@ cons:
 	// arg = *(sp--);
 	arg = stack_pop(&sp);
 
-	// h_entry = (heap_e) {.hd = arg, .tl = temp};
-	// *(++hp) = h_entry;
+	h_entry = (heap_e) {.hd = arg, .tl = temp};
+	heap_push(&hp, h_entry);
+	// printf("> [%08x] [%08x] <", h_entry.hd, h_entry.tl);
+	heap_head_show(&hp);
 
-	default_stack_ptr.value = (hp - heap_base);
+	default_stack_ptr.value = hp.count;
 	// *(++sp) = default_stack_ptr;
 	stack_push(&sp, default_stack_ptr);
 
@@ -502,7 +497,7 @@ hd:
 	offset = arg.value;
 	printf(" (offset) %04x", offset);
 
-	h_entry = *(heap_base + offset);
+	h_entry = hp.data[offset-1];
 	// *(++sp) = (h_entry.hd);
 	stack_push(&sp, h_entry.hd);
 
@@ -521,7 +516,7 @@ tl:
 	offset = arg.value;
 	printf(" (offset) %04x", offset);
 
-	h_entry = *(heap_base + offset);
+	h_entry = hp.data[offset-1];
 	// *(++sp) = (h_entry.tl);
 	stack_push(&sp, h_entry.tl);
 
@@ -534,6 +529,7 @@ nop:
 
 end_label:
 	stack_free(&sp);
+	heap_free(&hp);
 	fclose(fp);
 	exit(EXIT_SUCCESS);
 
