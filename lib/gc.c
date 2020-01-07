@@ -38,7 +38,7 @@ void gc_sweep(heap_s * hp) {
         heap_e entry = hp->data[i];
 
         if (entry.hd.marked) {
-            continue;
+            hp->data[i].hd.marked = 0;
         } else {
             vector_push(&hp->free_list, i);
         }

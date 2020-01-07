@@ -125,12 +125,11 @@ int main(int argc, char const *argv[])
 
 next_instruction_d:
 	opcode = *pc & 0xFF;
-	// printf("\t\t");
-	// stack_head_show(&sp);
+	printf("\t\t");
+	stack_head_show(&sp);
 	printf("\n");
 
 	printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
-	// printf("%s: ", labels[opcode]);
 	next_instruction_f;
 
 halt_label:
@@ -454,7 +453,7 @@ output_label:
 	arg = stack_pop(&sp);
 
 	// printf("\033[0;31m");
-	printf("\t(%c)", arg.value);
+	printf("--------> \t(%c)", arg.value);
 	// printf("\033[0m");
 
 	pc++;
@@ -480,8 +479,7 @@ cons:
 	// printf("> [%08x] [%08x] <", h_entry.hd, h_entry.tl);
 	// heap_head_show(&hp);
 
-	default_stack_ptr.value = hp.count;
-	heap_head_show(&hp);
+	default_stack_ptr.value = hp.count-1;
 	// *(++sp) = default_stack_ptr;
 	stack_push(&sp, default_stack_ptr);
 
@@ -500,7 +498,7 @@ hd:
 	offset = arg.value;
 	printf(" (offset) %04x", offset);
 
-	h_entry = hp.data[offset-1];
+	h_entry = hp.data[offset];
 	// *(++sp) = (h_entry.hd);
 	stack_push(&sp, h_entry.hd);
 
@@ -519,7 +517,7 @@ tl:
 	offset = arg.value;
 	printf(" (offset) %04x", offset);
 
-	h_entry = hp.data[offset-1];
+	h_entry = hp.data[offset];
 	// *(++sp) = (h_entry.tl);
 	stack_push(&sp, h_entry.tl);
 

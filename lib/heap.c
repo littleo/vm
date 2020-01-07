@@ -12,7 +12,12 @@ void heap_head_show(heap_s * hp) {
     if (hp->count) {
         heap_e head = hp->data[hp->count-1];
 
-        printf(" HEAP [%08x, %08x]", head.hd, head.tl);
+        // printf("\n[");
+        // printbits(head.hd, 32);
+        // printf(",");
+        // printbits(head.tl, 32);
+        // printf("]\n");
+        printf("[%08x,%08x]", head.hd, head.tl);
     } else {
         printf(" [EMPTY]");
     }
@@ -24,7 +29,7 @@ void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
         // 1. check for available entries
         if (hp->free_list.count > 0) {
             uint32_t offset = vector_pop(&hp->free_list);
-            printf("Found empty spot: %d \n", offset);
+            printf("\nFound empty spot: %d \n", offset);
             hp->data[offset] = entry;
 
             return;
@@ -34,7 +39,7 @@ void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
         gc_mark(hp, sp);
         gc_sweep(hp, sp);
         printf("\n-------------GC stop--------------\n");
-        
+
         if (hp->free_list.count > 0) {
             uint32_t offset = vector_pop(&hp->free_list);
             printf("Found empty spot: %d \n", offset);
@@ -58,6 +63,7 @@ void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
             exit(1);
         }
         printf("\n-------------Successfull realloc-------------\n");
+        // printf("bye bye");
     }
 
     hp->data[hp->count] = entry;
