@@ -125,8 +125,8 @@ int main(int argc, char const *argv[])
 
 next_instruction_d:
 	opcode = *pc & 0xFF;
-	printf("\t\t");
-	stack_head_show(&sp);
+	// printf("\t\t");
+	// stack_head_show(&sp);
 	printf("\n");
 
 	printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
@@ -455,7 +455,7 @@ output_label:
 	arg = stack_pop(&sp);
 
 	// printf("\033[0;31m");
-	printf("--------> \t(%c)", arg.value);
+	printf("\t(%c)", arg.value);
 	// printf("\033[0m");
 
 	pc++;
@@ -472,12 +472,18 @@ clock:
 
 cons:
 	// temp = *(sp--);
-	temp = stack_pop(&sp);
+	// temp = stack_pop(&sp);
+	temp = sp.data[sp.count-1];
 	// arg = *(sp--);
-	arg = stack_pop(&sp);
+	// arg = stack_pop(&sp);
+	arg = sp.data[sp.count-2];
 
 	h_entry = (heap_e) {.hd = arg, .tl = temp};
 	offset = heap_push(&hp, &sp, h_entry);
+
+	stack_pop(&sp);
+	stack_pop(&sp);
+	
 	// printf("> [%08x] [%08x] <", h_entry.hd, h_entry.tl);
 	// heap_head_show(&hp);
 

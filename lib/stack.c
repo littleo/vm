@@ -8,7 +8,9 @@ void stack_init(stack_s * v) {
 
 void stack_head_show(stack_s * v) {
     if (v->count) {
-        printf(" [%08x]", v->data[v->count-1]);
+        printf(" [%08x,", v->data[v->count-1]);
+        printf("%08x,", v->data[v->count-2]);
+        printf("%08x] ", v->data[v->count-3]);
         // printf("[");
         // printbits(&v->data[v->count-1], 32);
         // printf("]");

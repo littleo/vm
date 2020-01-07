@@ -24,12 +24,11 @@ void heap_head_show(heap_s * hp) {
 }
 
 uint32_t heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
-    
     if (hp->capacity < hp->count+1) {
         // 1. check for available entries
         if (hp->free_list.count > 0) {
             uint32_t offset = vector_pop(&hp->free_list);
-            printf("\nFound empty spot: %d \n", offset);
+            // printf("\nFound empty spot: %d \n", offset);
             hp->data[offset] = entry;
 
             return offset;
@@ -42,12 +41,12 @@ uint32_t heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
 
         if (hp->free_list.count > 0) {
             uint32_t offset = vector_pop(&hp->free_list);
-            printf("Found empty spot: %d \n", offset);
+            // printf("Found empty spot: %d \n", offset);
             hp->data[offset] = entry;
 
             return offset;
         } else {
-            printf("I did't succeed to garbage collection\n");
+            // printf("I did't succeed to garbage collection\n");
         }
         
 
@@ -57,12 +56,12 @@ uint32_t heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
         hp->data = GROW_ARRAY(hp->data, heap_e, 
             old_capacity, hp->capacity);
 
-        printf("\n-------------Realloc-------------\n");
+        // printf("\n-------------Realloc-------------\n");
         if (hp->data == NULL) {
             printf("I CAN'T DO ANYTHING ELSE");
             exit(1);
         }
-        printf("\n-------------Successfull realloc-------------\n");
+        // printf("\n-------------Successfull realloc-------------\n");
         // printf("bye bye");
     }
 
