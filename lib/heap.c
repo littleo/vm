@@ -34,10 +34,10 @@ uint32_t heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
             return offset;
         }
         // 2. call garbage collector to find new available entries
-        printf("\n-------------GC start-------------\n");
+        // printf("\n-------------GC start-------------\n");
         gc_mark(hp, sp);
         gc_sweep(hp, sp);
-        printf("\n-------------GC stop--------------\n");
+        // printf("\n-------------GC stop--------------\n");
 
         if (hp->free_list.count > 0) {
             uint32_t offset = vector_pop(&hp->free_list);

@@ -483,7 +483,6 @@ cons:
 
 	stack_pop(&sp);
 	stack_pop(&sp);
-	
 	// printf("> [%08x] [%08x] <", h_entry.hd, h_entry.tl);
 	// heap_head_show(&hp);
 
