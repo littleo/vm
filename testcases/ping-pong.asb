@@ -1,4 +1,5 @@
-4
+# Repeat 17 times
+10
 loop0:
 dup 0
 jnz do_loop0
@@ -8,8 +9,8 @@ do_loop0:
 1
 sub
 
-# Repeat 5 times
-5
+# Repeat 42 times
+30
 loop1:
 dup 0
 jnz do_loop1
@@ -19,8 +20,8 @@ do_loop1:
 1
 sub
 
-# Repeat 6 times
-6
+# Repeat 1000 times
+1000
 loop2:
 dup 0
 jnz do_loop2
@@ -30,12 +31,12 @@ do_loop2:
 1
 sub
 
-# Build list of 8 numbers
+# Build list of 1000 numbers
 0
 1
 loop3:
 dup 0
-8
+200
 gt
 jnz end_loop3
 dup 1
@@ -51,7 +52,7 @@ end_loop3:
 drop
 
 # Check list
-8
+200
 dup 1
 cons
 cons

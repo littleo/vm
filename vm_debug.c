@@ -76,12 +76,14 @@ int main(int argc, char const *argv[])
 	if (argc < 2)
 		exit(EXIT_FAILURE);
 
+	// open byte_program file
 	FILE * fp;
 	fp = fopen(argv[1], "r");
 
 	if (fp == NULL)
 		exit(EXIT_FAILURE);
 
+	// read byte_program
 	byte * byte_program;
 	byte_program = read_bytecode(fp);
 
@@ -116,7 +118,7 @@ int main(int argc, char const *argv[])
 
 	t = clock(); 
 
-	// printf("[Started]");
+	printf("[Started]");
 
 	// int offset;
 	int opcode;
@@ -125,9 +127,9 @@ next_instruction_d:
 	opcode = *pc & 0xFF;
 	// printf("\t\t");
 	// stack_head_show(&sp);
-	// printf("\n");
+	printf("\n");
 
-	// printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
+	printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
 	next_instruction_f;
 
 halt_label:
@@ -135,7 +137,7 @@ halt_label:
 
 jump_label:
 	jmp_addr = get_addr(pc);
-	// printf(" (+) %04x", jmp_addr);
+	printf(" (+) %04x", jmp_addr);
 
 	pc = byte_program + jmp_addr;
 	next_instruction;
@@ -148,9 +150,9 @@ jnz_label:
 		jmp_addr = get_addr(pc);
 		pc = byte_program + jmp_addr;
 
-		// printf(" (+) %02x", jmp_addr);
+		printf(" (+) %02x", jmp_addr);
 	} else { 
-		// printf(" (+) 1");
+		printf(" (+) 1");
 
 		pc += 3;
 	}
@@ -166,7 +168,7 @@ dup_label:
 	// *(++sp) = arg;
 	stack_push(&sp, arg);
 
-	// printf(" (pos) SP-%d", offset);
+	printf(" (pos) SP-%d", offset);
 
 	pc++;
 	next_instruction;
@@ -323,6 +325,8 @@ ne_label:
 	a = arg.value;
 	b = temp.value;
 
+	printf(" %08x %08x ", a, b);
+
 	arg.value = a != b ? 1 : 0;
 	// *(++sp) = arg;
 	stack_push(&sp, arg);
@@ -451,8 +455,7 @@ output_label:
 	arg = stack_pop(&sp);
 
 	// printf("\033[0;31m");
-	// putchar(arg.value);
-	printf("%c", arg.value);
+	printf("\t(%c)", arg.value);
 	// printf("\033[0m");
 
 	pc++;
@@ -500,7 +503,7 @@ hd:
 	}
 
 	offset = arg.value;
-	// printf(" (offset) %04x", offset);
+	printf(" (offset) %04x", offset);
 
 	h_entry = hp.data[offset];
 	// *(++sp) = (h_entry.hd);
@@ -519,7 +522,7 @@ tl:
 	}
 
 	offset = arg.value;
-	// printf(" (offset) %04x", offset);
+	printf(" (offset) %04x", offset);
 
 	h_entry = hp.data[offset];
 	// *(++sp) = (h_entry.tl);
