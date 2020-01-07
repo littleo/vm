@@ -23,7 +23,7 @@ void heap_head_show(heap_s * hp) {
     }
 }
 
-void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
+uint32_t heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
     
     if (hp->capacity < hp->count+1) {
         // 1. check for available entries
@@ -32,7 +32,7 @@ void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
             printf("\nFound empty spot: %d \n", offset);
             hp->data[offset] = entry;
 
-            return;
+            return offset;
         }
         // 2. call garbage collector to find new available entries
         printf("\n-------------GC start-------------\n");
@@ -45,7 +45,7 @@ void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
             printf("Found empty spot: %d \n", offset);
             hp->data[offset] = entry;
 
-            return;
+            return offset;
         } else {
             printf("I did't succeed to garbage collection\n");
         }
@@ -66,8 +66,11 @@ void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
         // printf("bye bye");
     }
 
-    hp->data[hp->count] = entry;
+    uint32_t offset = hp->count;
+    hp->data[offset] = entry;
     hp->count++;
+
+    return offset;
 }
 
 void heap_free(heap_s * hp) {                      

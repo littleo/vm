@@ -325,6 +325,8 @@ ne_label:
 	a = arg.value;
 	b = temp.value;
 
+	printf(" %08x %08x ", a, b);
+
 	arg.value = a != b ? 1 : 0;
 	// *(++sp) = arg;
 	stack_push(&sp, arg);
@@ -475,11 +477,11 @@ cons:
 	arg = stack_pop(&sp);
 
 	h_entry = (heap_e) {.hd = arg, .tl = temp};
-	heap_push(&hp, &sp, h_entry);
+	offset = heap_push(&hp, &sp, h_entry);
 	// printf("> [%08x] [%08x] <", h_entry.hd, h_entry.tl);
 	// heap_head_show(&hp);
 
-	default_stack_ptr.value = hp.count-1;
+	default_stack_ptr.value = offset;
 	// *(++sp) = default_stack_ptr;
 	stack_push(&sp, default_stack_ptr);
 

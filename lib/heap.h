@@ -22,7 +22,7 @@ typedef struct {
 
 void heap_init();
 void heap_head_show();
-void heap_push();
+uint32_t heap_push();
 void heap_free();
 
 #endif
