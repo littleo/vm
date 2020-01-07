@@ -6,8 +6,8 @@
 #include "stack.h"
 #include "memory.h"
 
+void gc_mark_me();
 void gc_mark();
-void gc_mark_all();
 void gc_sweep();
 
 #endif

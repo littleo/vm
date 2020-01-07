@@ -5,6 +5,7 @@
 #include "lib/stack.h"
 #include "lib/vector.h"
 #include "lib/memory.h"
+#include "lib/gc.h"
 
 #define next_instruction \
 	goto next_instruction_d
@@ -124,11 +125,12 @@ int main(int argc, char const *argv[])
 
 next_instruction_d:
 	opcode = *pc & 0xFF;
-	printf("\t\t");
-	stack_head_show(&sp);
+	// printf("\t\t");
+	// stack_head_show(&sp);
 	printf("\n");
 
 	printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
+	// printf("%s: ", labels[opcode]);
 	next_instruction_f;
 
 halt_label:
@@ -474,11 +476,12 @@ cons:
 	arg = stack_pop(&sp);
 
 	h_entry = (heap_e) {.hd = arg, .tl = temp};
-	heap_push(&hp, h_entry);
+	heap_push(&hp, &sp, h_entry);
 	// printf("> [%08x] [%08x] <", h_entry.hd, h_entry.tl);
-	heap_head_show(&hp);
+	// heap_head_show(&hp);
 
 	default_stack_ptr.value = hp.count;
+	heap_head_show(&hp);
 	// *(++sp) = default_stack_ptr;
 	stack_push(&sp, default_stack_ptr);
 

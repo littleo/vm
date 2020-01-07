@@ -1,4 +1,5 @@
 #include "heap.h"
+#include "gc.h"
 
 void heap_init(heap_s * hp) {
     hp->capacity = 0;
@@ -20,22 +21,32 @@ void heap_head_show(heap_s * hp) {
 void heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
     
     if (hp->capacity < hp->count+1) {
-        // 1. call garbage collector and fit empty entries
-        printf("\n-------------GC start-------------\n");
-        // gc_mark();
-        // gc_sweep();
-        printf("\n-------------GC stop--------------\n");
-
+        // 1. check for available entries
         if (hp->free_list.count > 0) {
             uint32_t offset = vector_pop(&hp->free_list);
+            printf("Found empty spot: %d \n", offset);
+            hp->data[offset] = entry;
+
+            return;
+        }
+        // 2. call garbage collector to find new available entries
+        printf("\n-------------GC start-------------\n");
+        gc_mark(hp, sp);
+        gc_sweep(hp, sp);
+        printf("\n-------------GC stop--------------\n");
+        
+        if (hp->free_list.count > 0) {
+            uint32_t offset = vector_pop(&hp->free_list);
+            printf("Found empty spot: %d \n", offset);
             hp->data[offset] = entry;
 
             return;
         } else {
             printf("I did't succeed to garbage collection\n");
         }
+        
 
-        // 2. try to realloc
+        // 3. try to realloc
         uint32_t old_capacity = hp->capacity;
         hp->capacity = GROW_CAPACITY(old_capacity);
         hp->data = GROW_ARRAY(hp->data, heap_e, 
