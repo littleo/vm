@@ -1,10 +1,19 @@
 #include "stack.h"
 
-void stack_init(stack_s * v) {
+void stack_init(stack_s * v, uint32_t initial_capacity) {
+    v->count = 0;
+
+    if (initial_capacity) {
+        v->capacity = initial_capacity;
+        v->data = (stack_e *) malloc(initial_capacity * sizeof(stack_e));
+    } else {
+        v->capacity = 0;
+        v->data = NULL;
+    }
+
     v->capacity = 0;
     v->count = 0;
-    v->data = GROW_ARRAY(v->data, stack_e, 
-            0, STACK_SIZE);
+    v->data = (stack_e *) malloc(STACK_SIZE * sizeof(stack_e));
 }
 
 void stack_head_show(stack_s * v) {
@@ -48,6 +57,6 @@ stack_e stack_pop(stack_s * v) {
 
 void stack_free(stack_s * v) {                      
   FREE_ARRAY(stack_e, v->data, v->capacity);
-  stack_init(v);                                 
+  stack_init(v, 0);                                 
 }
 

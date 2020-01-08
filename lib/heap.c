@@ -1,10 +1,17 @@
 #include "heap.h"
 #include "gc.h"
 
-void heap_init(heap_s * hp) {
-    hp->capacity = 0;
+void heap_init(heap_s * hp, uint32_t initial_capacity) {
     hp->count = 0;
-    hp->data = NULL;
+
+    if (initial_capacity) {
+        hp->capacity = initial_capacity;
+        hp->data = (heap_e *) malloc(initial_capacity * sizeof(heap_e));
+    } else {
+        hp->capacity = 0;
+        hp->data = NULL;
+    }
+
     vector_init(&hp->free_list);
 }
 
@@ -74,5 +81,5 @@ uint32_t heap_push(heap_s * hp, stack_e * sp, heap_e entry) {
 
 void heap_free(heap_s * hp) {                      
   FREE_ARRAY(heap_e, hp->data, hp->capacity);
-  heap_init(hp);                                 
+  heap_init(hp, 0);                                 
 }

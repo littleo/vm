@@ -92,7 +92,7 @@ int main(int argc, char const *argv[])
 
 // ------------Stack---------------
 	stack_s sp;
-	stack_init(&sp);
+	stack_init(&sp, STACK_SIZE);
 
 	stack_e arg, temp;
 	stack_e default_stack_val = {0,0,0};
@@ -107,7 +107,7 @@ int main(int argc, char const *argv[])
 
 // -------------Heap---------------
 	heap_s hp;
-	heap_init(&hp);
+	heap_init(&hp, 100);
 
 	heap_e h_entry;
 // ---------------------------------
