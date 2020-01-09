@@ -11,8 +11,6 @@ void stack_init(stack_s * v, uint32_t initial_capacity) {
         v->data = NULL;
     }
 
-    v->capacity = 0;
-    v->count = 0;
     v->data = (stack_e *) malloc(STACK_SIZE * sizeof(stack_e));
 }
 
