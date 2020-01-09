@@ -32,7 +32,6 @@ void gc_mark(heap_s * hp, stack_s * sp) {
 
     for (size_t i = 0; i < sp->count; i++)
     {
-        
         if (sp->data[i].type) {
             // printf("[%d] Pointer offset: %08x \n", i, sp->data[i].value);
             offset = sp->data[i].value;

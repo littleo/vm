@@ -107,7 +107,7 @@ int main(int argc, char const *argv[])
 
 // -------------Heap---------------
 	heap_s hp;
-	heap_init(&hp, 100);
+	heap_init(&hp, HEAP_SIZE);
 
 	heap_e h_entry;
 // ---------------------------------
