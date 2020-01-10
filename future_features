@@ -1,0 +1,10 @@
+- use of c preprocessor to get rid of duplicate code for vectorized implementation of heap, stack, freelist
+- try to stop gc earlier:
+	1. change the way in which gc scans the stack 
+			ex. 1: down -> up
+			    2: up ->down
+	2. stop gc earlier if we found at least one new stop for the cons cell
+	3. (MAYBE) choose between how often we'll call gc instead of realloc
+	4. gc_sweep should also decrease count by one
+	5. when there is an empty spot in freelist increase count by
+	6. using 4,5 we could be able to stop gc earlier using a cnt for how many entries of hp we have already checked. if cnt == hp.count we could stop stack's scanning.
