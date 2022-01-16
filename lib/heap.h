@@ -6,7 +6,7 @@
 #include "memory.h"
 #include "vector.h"
 
-#define HEAP_SIZE 500
+#define HEAP_SIZE 10
 
 typedef struct {
     stack_e hd;
