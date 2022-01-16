@@ -13,14 +13,14 @@ void gc_mark_me(heap_s * hp, stack_s * sp, uint32_t offset) {
     if (entry->hd.type) {
         uint32_t offset = entry->hd.value;
 
-        printf(" > %d", offset);
+        // printf(" > %d", offset);
         gc_mark_me(hp, sp, offset);
     }
 
     if (entry->tl.type) {
         uint32_t offset = entry->tl.value;
 
-        printf("> %d", offset);
+        // printf("> %d", offset);
         gc_mark_me(hp, sp, offset);
     }
 }
@@ -32,14 +32,13 @@ void gc_mark(heap_s * hp, stack_s * sp) {
 
     for (size_t i = 0; i < sp->count; i++)
     {
-        
         if (sp->data[i].type) {
             // printf("[%d] Pointer offset: %08x \n", i, sp->data[i].value);
             offset = sp->data[i].value;
             // gc_mark_me(hp, sp, offset);
-            printf("\n %d", offset);
+            // printf("\n %d", offset);
             gc_mark_me(hp, sp, offset);
-            printf("\n");
+            // printf("\n");
         }
         // printf("[%d] Value offset: %08x \n", i, sp->data[i].value);
     }
