@@ -118,7 +118,7 @@ int main(int argc, char const *argv[])
 
 	t = clock(); 
 
-	printf("[Started]");
+	// printf("[Started]\n");
 
 	// int offset;
 	int opcode;
@@ -127,9 +127,9 @@ next_instruction_d:
 	opcode = *pc & 0xFF;
 	// printf("\t\t");
 	// stack_head_show(&sp);
-	printf("\n");
+	// printf("\n");
 
-	printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
+	// printf("%p: [%02x] %s", pc, opcode, labels[opcode]);
 	next_instruction_f;
 
 halt_label:
@@ -137,7 +137,7 @@ halt_label:
 
 jump_label:
 	jmp_addr = get_addr(pc);
-	printf(" (+) %04x", jmp_addr);
+	// printf(" (+) %04x", jmp_addr);
 
 	pc = byte_program + jmp_addr;
 	next_instruction;
@@ -150,9 +150,9 @@ jnz_label:
 		jmp_addr = get_addr(pc);
 		pc = byte_program + jmp_addr;
 
-		printf(" (+) %02x", jmp_addr);
+		// printf(" (+) %02x", jmp_addr);
 	} else { 
-		printf(" (+) 1");
+		// printf(" (+) 1");
 
 		pc += 3;
 	}
@@ -168,7 +168,7 @@ dup_label:
 	// *(++sp) = arg;
 	stack_push(&sp, arg);
 
-	printf(" (pos) SP-%d", offset);
+	// printf(" (pos) SP-%d", offset);
 
 	pc++;
 	next_instruction;
@@ -325,7 +325,7 @@ ne_label:
 	a = arg.value;
 	b = temp.value;
 
-	printf(" %08x %08x ", a, b);
+	// printf(" %08x %08x ", a, b);
 
 	arg.value = a != b ? 1 : 0;
 	// *(++sp) = arg;
@@ -442,7 +442,7 @@ or_label:
 	next_instruction;
 
 input_label:
-	printf(" ");
+	// printf(": ");
 	default_stack_val.value = getchar();
 	// *(++sp) = default_stack_val;
 	stack_push(&sp, default_stack_val);
@@ -455,8 +455,9 @@ output_label:
 	arg = stack_pop(&sp);
 
 	// printf("\033[0;31m");
-	printf("\t(%c)", arg.value);
+	// printf("\t(%c)", arg.value);
 	// printf("\033[0m");
+	printf("%c", arg.value);
 
 	pc++;
 	next_instruction;
@@ -504,7 +505,7 @@ hd:
 	}
 
 	offset = arg.value;
-	printf(" (offset) %04x", offset);
+	// printf(" (offset) %04x", offset);
 
 	h_entry = hp.data[offset];
 	// *(++sp) = (h_entry.hd);
@@ -523,7 +524,7 @@ tl:
 	}
 
 	offset = arg.value;
-	printf(" (offset) %04x", offset);
+	// printf(" (offset) %04x", offset);
 
 	h_entry = hp.data[offset];
 	// *(++sp) = (h_entry.tl);
