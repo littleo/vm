@@ -1,9 +1,6 @@
 ## VM (GC)
 
-A virtual machine (p-code machine) that executes byte code of an imaginary language. There is also a **mark-and-sweep** garbage collector (gc) implemented. It follows the list of the available ``instructions``.
-
-
-### Instructions
+A virtual machine (p-code machine) that executes byte code of an imaginary language. There is also a **mark-and-sweep** garbage collector (gc) implemented.
 
 ```python
 instr =  [
@@ -16,4 +13,3 @@ instr =  [
 	'clock', 
 	'cons', 'hd', 'tl']
 ```
-
