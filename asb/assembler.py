@@ -79,6 +79,8 @@ opcode = {
   'tl': b'\x32',
 }
 
+print(opcode.keys())
+
 byteorder = 'little'
 
 with open(sys.argv[2], 'wb') as f:
