@@ -17,7 +17,7 @@ You can experiment writing your own program (unfortunately, in assembly). It fol
 
 ### Example
 
-```assembly
+```python
 # Read input (n) and print [n,n-1,..1]
 
 main:
