@@ -45,12 +45,12 @@ halt			# terminate program
 
 The assembler then parses your assembly code and produces a bytecode sequence.
 
-```
+```bash
 ~ python3 assembler.py input.asb output.b
 ```
 
 To run this, pass it as an argument (argv[1]) to the `vm`.
 
-```
+```bash
 ~ ./vm output.b
 ```
