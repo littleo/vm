@@ -17,28 +17,24 @@ You can experiment writing your own program (unfortunately, in assembly). It fol
 
 
 ```assembly
-# Read input (n) and print [n,n-1,..0]
-0
+# Read input (n) and print [n,n-1,..1]
 
-read:
+main:
 input
-dup 0
-'0'
-lt
-jnz end
+jump loop
 
-write:
+loop:
 dup 0
-'1'
-lt
-jnz end
+output
 1
 sub
 dup 0
+'0'
+eq
+jnz end
+'-'
 output
-'\n'
-output
-jump write
+jump loop
 
 end:
 halt
