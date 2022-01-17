@@ -15,36 +15,42 @@ You can experiment writing your own program (unfortunately, in assembly). It fol
 	'cons', 'hd', 'tl'
 ```
 
+### Example
 
 ```assembly
 # Read input (n) and print [n,n-1,..1]
 
 main:
-input
-jump loop
+input			# read input
+jump loop		# jump to label: loop
 
 loop:
-dup 0
-output
-1
-sub
-dup 0
-'0'
-eq
-jnz end
-'-'
+dup 0			# duplicate stack's first entry (0)
+output			# write stack entry
+1 				# push 1 into stack
+sub				# pop 2 entries (b,a) and push (a-b)
+dup 0			# duplicate entry 0
+'0'				# push 0-ascii code
+eq 				# pop b,a : check whether a==b
+jnz end			# if (a==b): jump to end
+'-'	
 output
 jump loop
 
 end:
-halt
+halt			# terminate program
 
 
 ```
 
-The assembler then parses your assembly code and produces a bytecode sequence. To run this, pass it as an argument to the `vm`.
+The assembler then parses your assembly code and produces a bytecode sequence.
 
 ```
 ~ python3 assembler.py input.asb output.b
+```
+
+To run this, pass it as an argument (argv[1]) to the `vm`.
+
+```
 ~ ./vm output.b
 ```
